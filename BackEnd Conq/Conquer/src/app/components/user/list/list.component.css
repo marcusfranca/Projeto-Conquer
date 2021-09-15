@@ -1,0 +1,63 @@
+.full-width-table {
+  width: 100%;  
+}
+
+.sidenav{
+  background-color: #1a1919;
+  width: 162PX;
+}
+
+.sidenav a{
+  color: #FFF;
+}
+.sidenav i{
+  padding-right: 10px; 
+}
+.content{
+  padding: 16px;
+  background-color: #FFF;
+}
+.header{
+  display: flex;
+  align-items: center;
+
+}
+ 
+.header a{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header .logo{
+  max-height: 37px;
+}
+.header .title-group{
+  padding-left: 38px;
+}
+
+.header .title-group i{
+  padding-right: 3px;
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+
+  display: flex;
+  justify-content: flex-end; 
+}
+
+.footer > span{
+  font-size: 2;
+  font-weight: 300px;
+}
+.edit{
+  margin: 10px 0px 0px -1px;
+  
+}
+
+.edit > i{
+  color: #FFF;
+}
+

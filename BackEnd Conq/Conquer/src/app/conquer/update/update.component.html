@@ -1,0 +1,46 @@
+<mat-toolbar class="header mat-elevation-z4">
+    <span>
+        <a>
+            <img class="logo" src="assets/img/icon_login.png" alt="logo">
+        </a>
+    </span>
+    <span class="title-group">
+        <a>
+            <i class="material-icons">
+                article
+            </i>
+            Atualizar Lista
+        </a>
+    </span>
+
+</mat-toolbar>
+
+<mat-card>
+    <mat-card-title>Atualizar Aluno</mat-card-title>
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Nome" [(ngModel)]="create.name" name="name">
+            <mat-form-field>
+                <input matInput placeholder="Email" [(ngModel)]="create.email" name="email">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Telefone" [(ngModel)]="create.phone" name="phone">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Data de Nascimento</mat-label>
+                <input matInput [matDatepicker]="dp3" [(ngModel)]="create.birthday" name="birthday">
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+            </mat-form-field>
+    <button mat-raised-button color="primary" (click)="updateList()">Atualizar</button>
+    <button mat-raised-button (click)="cancel()">Cancelar</button>
+
+
+<mat-toolbar class="footer">
+    <span class="red">
+        Desenvolvido Por
+        <i class="material-icons red v-middle">
+        </i>
+        <strong>Marcus</strong>
+    </span>
+</mat-toolbar>
