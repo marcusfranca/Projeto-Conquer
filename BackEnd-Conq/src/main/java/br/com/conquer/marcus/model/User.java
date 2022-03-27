@@ -1,33 +1,48 @@
 package br.com.conquer.marcus.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import br.com.conquer.marcus.model.dto.UserDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
-@Data 
+@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable { 
+@Builder
+public class User {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; 
-	
-	private String name; 
-	private String email; 
-	private String phone; 
-	private LocalDate birthday;
+	private Long id;
 
+	private String name;
+
+	private String email;
+
+	private String phone;
+
+	private LocalDateTime birthday;
+
+	public UserDTO ToDto() {
+		return UserDTO.builder()
+				.id(id)
+				.name(name)
+				.email(email)
+				.birthday(birthday)
+				.phone(phone)
+				.build();
+	}
 }

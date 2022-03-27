@@ -1,15 +1,13 @@
 package br.com.conquer.marcus.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.conquer.marcus.model.dto.UserDTO;
+import br.com.conquer.marcus.service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,83 +16,45 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.conquer.marcus.model.User;
-import br.com.conquer.marcus.model.dto.Response;
-import br.com.conquer.marcus.model.dto.UserDTO;
-import br.com.conquer.marcus.service.IUserService;
+import javax.validation.Valid;
 
 
-@RestController 
-@RequestMapping("/conquer/user")
+@RestController
+@RequestMapping("conquer/user")
+@RequiredArgsConstructor
+@CrossOrigin("*")
+
 public class UserController {
 
-	@Autowired
-	IUserService userService;
-	
-	@CrossOrigin 
-	@GetMapping 
-	public ResponseEntity<List<User>> findAllUsers() { 
-		List<User> userList = userService.findAll(); 
-		return new ResponseEntity<>(userList, HttpStatus.OK); 
+	private final UserServiceImpl userService;
+
+	@GetMapping
+	public ResponseEntity<Page<UserDTO>> PageUser(
+			@PageableDefault(page = 0, sort = {"name"}) Pageable pageable) {
+		return ResponseEntity.ok(userService.PageUser(pageable));
 	}
-	
-	
-	@CrossOrigin 
+
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findUserById(@PathVariable Long id) { 
-		Optional<User> user = userService.findById(id); 
-		if (user.isPresent()) {
-			return new ResponseEntity<>(user.get(), HttpStatus.OK); 
-		} else {
-			return new ResponseEntity<>(user.get(), HttpStatus.NOT_FOUND); 
-		}
+	public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
+		return new ResponseEntity(userService.findById(id), HttpStatus.OK);
 	}
 
-
-	@CrossOrigin
-	@PostMapping 
-	public ResponseEntity<Response<User>> createUser(@RequestBody @Valid UserDTO userDTO, BindingResult validationResult) { 
-		User user = userService.create(userService.toModel(userDTO)); 
-		
-		Response<User> response = new Response<>(); 
-		
-		if (validationResult.hasErrors()) { 
-			validationResult.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage())); 
-			return ResponseEntity.badRequest().body(response);
-		}
-		   return new ResponseEntity<>(response, HttpStatus.OK); 
-		}
-
-	@CrossOrigin 
-	@PutMapping("/update") 
-	public ResponseEntity<Response<User>> updateUser(@RequestBody @Valid UserDTO userDTO, BindingResult validationResult) { 
-		Response<User> response = new Response<>();
-
-		if (validationResult.hasErrors()) {
-			validationResult.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
-
-		if (this.userService.findById(userDTO.getId()).isPresent()) {
-			User user = userService.update(userService.toModel(userDTO));  
-			return new ResponseEntity<>(response, HttpStatus.OK); 
-		} else {
-			response.addErrorMsgToResponse("Usuário não encontrado"); 
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); 
-		}
+	@PostMapping
+	public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
+		return new ResponseEntity(userService.create(userDTO), HttpStatus.CREATED);
 	}
 
-	@CrossOrigin 
-	@DeleteMapping("delete/{id}") 
-	public ResponseEntity<Void> deleteUser(@PathVariable Long id) { 
-		if (this.userService.findById(id).isPresent()) { 
-			userService.deleteById(id); 
-			return new ResponseEntity<>(null, HttpStatus.OK); 
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); 
-		}
+	@PutMapping("/update/{id}")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable Long id) {
+		return new ResponseEntity(userService.updateUser(userDTO, id), HttpStatus.OK);
 	}
 
+	@DeleteMapping("delete/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+	}
 }

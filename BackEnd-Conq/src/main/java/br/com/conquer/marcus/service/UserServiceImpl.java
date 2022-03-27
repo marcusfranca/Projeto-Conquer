@@ -1,55 +1,52 @@
 package br.com.conquer.marcus.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import br.com.conquer.marcus.exception.NotFoundExceptionId;
 import br.com.conquer.marcus.model.User;
 import br.com.conquer.marcus.model.dto.UserDTO;
 import br.com.conquer.marcus.repository.IUserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-@Service 
-public class UserServiceImpl implements IUserService {
+@Service
+@RequiredArgsConstructor
+public class UserServiceImpl {
 
-	@Autowired
-	IUserRepository userRepository; // repository
+	private final IUserRepository userRepository;
 
-	@Override
-	public Optional<User> findById(Long id) {
-		return userRepository.findById(id);
+	public Page<UserDTO> PageUser(Pageable pageable) {
+		return userRepository.findAll(pageable).map(User::ToDto);
 	}
 
-	@Override
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public UserDTO create(UserDTO userDTO) {
+		return userRepository.save(userDTO.ToEntity()).ToDto();
 	}
 
-	@Override
-	public User create(User user) {
-		return userRepository.save(user);
-	}
 
-	@Override
-	public User update(User user) {
-		return userRepository.save(user);
-	}
-
-	@Override
-	public void deleteById(Long id) {
+	public void deleteUser(Long id) {
+		checkId(id);
 		userRepository.deleteById(id);
 	}
 
-	@Override
-	public UserDTO toDTO(User user) {
-		return null;
+	public UserDTO updateUser(UserDTO userDTO, Long id) {
+		checkId(id);
+		userDTO.id = id;
+		return userRepository.save(userDTO.ToEntity()).ToDto();
 	}
 
-	@Override
-	public User toModel(UserDTO userDTO) {
-		return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone(),
-				userDTO.getBirthday());
+	@SneakyThrows
+	public UserDTO findById(Long id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new NotFoundExceptionId(id))
+				.ToDto();
 	}
 
+	@SneakyThrows
+	private void checkId(Long id) {
+		userRepository.findById(id)
+				.orElseThrow(() -> new NotFoundExceptionId(id))
+				.ToDto();
+	}
 }

@@ -7,5 +7,5 @@ import br.com.conquer.marcus.model.User;
 
 @Repository 
 public interface IUserRepository extends JpaRepository<User, Long>{
-	
+
 }

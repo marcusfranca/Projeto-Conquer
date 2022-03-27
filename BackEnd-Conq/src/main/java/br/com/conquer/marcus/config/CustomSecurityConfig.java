@@ -21,7 +21,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("conquer").password("{noop}conquer123").roles("USER");// roles(papel do usuario), {noop}: usado para codificar senhas,DelegatingPassword, Encoder use , NoOpPasswordEnco: validando minha senha, cada um tem sua ação
+		auth.inMemoryAuthentication().withUser("conquer").password("{noop}conquer123").roles("USER");
 	}
 
 }

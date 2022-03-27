@@ -1,19 +1,13 @@
 package br.com.conquer.marcus;
 
+import br.com.conquer.marcus.model.User;
+import br.com.conquer.marcus.repository.IUserRepository;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-/*
+import org.springframework.context.annotation.Bean;
 
-@Bean: Basicamente quando você coloca a anotação @Bean, você está dizendo pro Spring que quer criar esse 
-objeto e deixar ele disponível para outras classes utilizarem ele como dependência, @componente sem a anotação
-o metado não é chamado.
-
-@SpringBootApplication: é usada para marcar uma classe de configuração que declara um ou mais 
-métodos @Bean e também dispara a configuração automática e a varredura de componentes. 
-*/
-/*Hibernate: Um framework objeto relacional que simplificava a interação entre a aplicação e o banco de dados,implementa as especificações */
-/*
- JPA: conjunto de especificações para definir um comportamento de persistência de dados, quem implmenta as especificações o hibernate e etc..*/
+import java.util.Arrays;
 
 @SpringBootApplication // metadado
 public class MarcusApplication {
