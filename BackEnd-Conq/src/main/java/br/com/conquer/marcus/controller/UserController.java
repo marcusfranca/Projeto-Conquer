@@ -21,12 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("conquer/user")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-
 public class UserController {
 
 	private final UserServiceImpl userService;

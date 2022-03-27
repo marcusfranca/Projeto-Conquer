@@ -16,21 +16,20 @@ import java.time.LocalDateTime;
 @Builder
 public class UserDTO{
 
-
 	public Long id;
 
-	@NotNull(message = "nome é necessario")
+	@NotNull(message = "Nome não poder ser nulo")
 	public String name;
 
-	@NotNull(message = "email é necessario")
+	@NotNull(message = "Email não pode ser nulo")
 	@Email
 	public String email;
 
-	@NotNull(message = "telefone")
+	@NotNull(message = "Telefone não pode ser nulo")
 	@Size(min = 11, max = 11)
 	public String phone;
 
-	@NotNull(message = "data de nascimento é necessario")
+	@NotNull(message = "Data De Nascimento não pode ser nulo")
 	public LocalDateTime birthday;
 
 	public User ToEntity(){
